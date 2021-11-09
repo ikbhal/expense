@@ -1,10 +1,13 @@
 <script>
+import AutoComplete from "simple-svelte-autocomplete";
 import {onMount} from 'svelte';
 //https://svelte.dev/tutorial/writable-stores
 import {writable} from 'svelte/store';
-
 import {db} from './firebase';
 let todayDateString = new Date().toISOString().slice(0,10);
+const persons= ["Ikbhal", "Sumiya", "Towheed", "Faaiza", "Sumiya"];
+
+let selectedPerson;
 export let expenseDate= todayDateString;
 export let expenseFor = '';
 export let amount = 0;
@@ -69,9 +72,14 @@ function deleteExpense(id){
 	<form on:submit|preventDefault={handleOnSubmit}>
 		Expense Date:<input type="date" bind:value={expenseDate}/>
 		<input type="number" name="amount" bind:value={amount} placeholder="amount" />
+		<!-- https://simple-svelte-autocomplete.surge.sh/
+		https://github.com/pstanoev/simple-svelte-autocomplete
+		-->
+		<AutoComplete items={persons} bind:selectedItem={selectedPerson} />	
 		<input type="text" name="expenseFor" bind:value={expenseFor} placeholder="expense for"/>
 		<button type="submit" >Add</button>
 	</form>
+	<p>selcted color: {selectedPerson||expenseFor}</p>
 </div>
 <hr/>
 <h3>List Expense</h3>
